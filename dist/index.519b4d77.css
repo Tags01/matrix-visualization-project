@@ -1,3 +1,7 @@
+html {
+  touch-action: none;
+}
+
 h1, h3, footer *, #click-advanced-container {
   margin: 1vw;
 }

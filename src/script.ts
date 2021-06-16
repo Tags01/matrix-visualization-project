@@ -1,23 +1,34 @@
 import * as THREE from "three";
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+
+
 import {Sky as SkyShader} from "three/examples/jsm/objects/Sky";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import * as Utils from "./utils";
 import * as Textures from "./textures"
+import { Vector2 } from "three";
+
 
 type Object3D = THREE.Object3D;
 type Camera = THREE.Camera;
 
 const renderer = new THREE.WebGLRenderer({
-     canvas: Utils.$0("#threejs-canvas") as HTMLCanvasElement,
-     antialias: true,
+    canvas: Utils.$0("#threejs-canvas") as HTMLCanvasElement,
+    antialias: false,
     failIfMajorPerformanceCaveat: true,
     powerPreference: "high-performance",
     precision: "lowp"
     });
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.5;
-renderer.setSize(window.innerWidth/2, window.innerHeight)
+renderer.toneMappingExposure = 0.8;
+renderer.autoClear = false;
+renderer.setSize(window.innerWidth/2, window.innerHeight);
+renderer.pixelRatio = 1;
+
 const scene = new THREE.Scene();
 scene.autoUpdate = false;
 const group = new THREE.Group();
@@ -25,7 +36,18 @@ const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerH
 camera.position.set(1, 1, 1).multiplyScalar(20);
 camera.lookAt(0, 0, 0);
 
-scene.fog = new THREE.Fog(0xbbbbbb, 1);
+const renderPass = new RenderPass(scene, camera);
+const fxaa = new ShaderPass(FXAAShader);
+const fxaaResolution: Vector2 = fxaa.material.uniforms['resolution'].value;
+
+fxaaResolution.set(
+    2 / window.innerWidth, 1/ window.innerWidth 
+)
+
+const composerRenderer = new EffectComposer(renderer);
+composerRenderer.addPass(renderPass);
+composerRenderer.addPass(fxaa);
+
 
 const ambientLight = new THREE.AmbientLight(new THREE.Color(0x555555), 0.6);
 const directionalLight = new THREE.DirectionalLight(new THREE.Color(0xeeeeee), 1);
@@ -73,7 +95,7 @@ let uniforms = {
     elevation: {value: 2.7},
     azimuth: {value: 180},
     exposure: {value: renderer.toneMappingExposure},
-    sunPosition: {value: new THREE.Vector3(0, Math.PI/4, 0)}
+    sunPosition: { value: new THREE.Vector3(Math.PI / 4, Math.PI / 4, Math.PI / 4)}
 }
 Object.assign(sky.material.uniforms, uniforms);
 
@@ -96,7 +118,7 @@ controls.maxDistance = 2_000;
 //render loop
 
 function render() {
-    renderer.render(scene, camera);
+    composerRenderer.render();
     controls.update();
 }
 
@@ -184,7 +206,7 @@ renderer.domElement.addEventListener("touchstart", (event: TouchEvent) => {
     pickObject(event.touches[0].clientX, event.touches[0].clientY);
     event.preventDefault();
     event.stopPropagation();
-}, {passive: true});
+}, {passive: false});
 
 //making the advanced tab work
 
@@ -204,11 +226,14 @@ function toggleAdvanced(event: Event) {
     event.stopPropagation();
 }
 buttonAdvanced.addEventListener("click", toggleAdvanced);
-buttonAdvanced.addEventListener("touchstart", toggleAdvanced, {passive: true})
+buttonAdvanced.addEventListener("touchstart", toggleAdvanced, {passive: false})
 
 
 window.onresize = () => {
     renderer.setSize(window.innerWidth / 2, window.innerHeight);
     camera.aspect = window.innerWidth / (2*window.innerHeight);
     camera.updateProjectionMatrix();
+    fxaaResolution.set(
+        2 / window.innerWidth, 1 / window.innerWidth
+    )
 }
