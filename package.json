@@ -3,17 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "sourceType": "module",
-  "app": "pkg/browser/index.html",
-  "appModern": "pkg/browserModern/index.html",
+  "app": "pkg/index.html",
   "targets": {
     "app": {
       "engines": {
-        "browsers": "> 1.00%"
-      }
-    },
-    "appModern": {
-      "engines": {
-        "browsers": "Chrome 70"
+        "browsers": "> 25.00%"
       }
     }
   },
