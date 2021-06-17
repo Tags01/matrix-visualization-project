@@ -7,7 +7,7 @@
   "targets": {
     "app": {
       "engines": {
-        "browsers": "> 25.00%"
+        "browsers": "> 1.00%"
       }
     }
   },

@@ -20,11 +20,14 @@ const renderer = new THREE.WebGLRenderer({
     antialias: false,
     failIfMajorPerformanceCaveat: true,
     powerPreference: "high-performance",
-    precision: "lowp"
+    precision: "lowp",
+    logarithmicDepthBuffer: true
     });
+renderer.setClearColor(0x87ceeb, 1)
+renderer.pixelRatio = window.devicePixelRatio ?? 1;
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.8;
+renderer.toneMappingExposure = 1;
 renderer.autoClear = false;
 renderer.setSize(window.innerWidth/2, window.innerHeight);
 renderer.pixelRatio = 1;
@@ -51,7 +54,7 @@ composerRenderer.addPass(fxaa);
 
 const ambientLight = new THREE.AmbientLight(new THREE.Color(0x555555), 0.6);
 const directionalLight = new THREE.DirectionalLight(new THREE.Color(0xeeeeee), 1);
-directionalLight.position.set(1, 1, 1).multiplyScalar(45_000);
+directionalLight.position.set(1, 1, 1).multiplyScalar(400);
 directionalLight.lookAt(0, 0, 0);
 
 scene.add(ambientLight, directionalLight);
@@ -86,7 +89,7 @@ scene.add(group)
 //Sky setup
 
 const sky = new SkyShader();
-sky.matrixWorld.makeScale(15_000, 15_000, 15_000);
+sky.matrixWorld.makeScale(400, 400, 400);
 let uniforms = {
     turbidity: {value: 10},
     rayleigh: {value: 3},

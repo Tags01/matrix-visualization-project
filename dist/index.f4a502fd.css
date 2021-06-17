@@ -1,0 +1,165 @@
+html {
+  touch-action: none;
+}
+
+h1, h3, footer *, #click-advanced-container {
+  margin: 1vw;
+}
+
+#switch-to-landscape {
+  position: fixed;
+  background-color: rgba(203, 203, 203, 0.8);
+  backdrop-filter: blur(2px);
+  width: 100vw;
+  height: 100vh;
+  visibility: hidden;
+  z-index: 2;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#switch-to-landscape > * {
+  font-size: 1.5em;
+  width: 80vw;
+  text-align: center;
+}
+
+@media all and (orientation: portrait) and (max-width: 500px) {
+  #switch-to-landscape {
+    visibility: visible;
+  }
+}
+#click-advanced-container {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+#click-advanced {
+  width: 1.25vw;
+  height: 1.25vw;
+  border: 1px solid black;
+  border-radius: 4px;
+  margin: 0 0;
+  padding: 0 0;
+  transform: translateX(5px);
+}
+
+.on {
+  background-color: green;
+}
+
+*[contenteditable=false] {
+  filter: brightness(90%);
+}
+
+*[contenteditable] {
+  height: 0;
+  background-color: white;
+  padding: 1.5vw 0;
+  overflow: hidden;
+  border-radius: 7px;
+  margin: 0 0;
+  font-size: 1.5vw;
+  text-wrap: break;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+*[contenteditable]:focus {
+  outline: none;
+  border: none;
+  box-shadow: inset 0 0 0 1px blue;
+  cursor: text;
+}
+
+body {
+  position: fixed;
+  margin: 0px 0px;
+  padding: 0px 0px;
+  overflow: hidden;
+  background-color: #cbcbcb;
+}
+
+canvas {
+  position: fixed;
+  width: 50vw;
+  height: 100vh;
+  background-color: #e9e9e9;
+}
+
+#left-container {
+  position: fixed;
+  left: 50vw;
+  width: 50vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+#bracket-matrix-bracket {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.bracket {
+  border: 5px solid black;
+  height: 20vw;
+  width: max(2vw, 1px);
+}
+
+#bracket-front {
+  border-right: none;
+}
+
+#bracket-back {
+  border-left: none;
+}
+
+#matrix-container {
+  display: grid;
+  grid-template: repeat(4, 1fr)/repeat(4, 1fr);
+  grid-gap: max(2vw, 1px);
+  width: calc(48vw - 2*max(2vw, 1px) - 18px);
+  padding-top: 15% 0;
+}
+
+.matrix-component > div {
+  width: 50vw;
+  height: 10vw;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.matrix-component > div > div {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.matrix-component > div > div > p[contenteditable] {
+  width: 9vw;
+  margin: max(2vw, 1px);
+}
+
+#attributation {
+  background-color: #aaaaaa;
+  width: 50vw;
+  margin: 0 0;
+  padding: 0 0;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+/*# sourceMappingURL=index.f4a502fd.css.map */
